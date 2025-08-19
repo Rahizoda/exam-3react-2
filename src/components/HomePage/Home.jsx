@@ -44,7 +44,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { useDispatch, useSelector } from "react-redux";
-import {  GetCategory, GetProducts } from "../../dataServer/TodoApi";
+import {  addToWishlist, GetCategory, GetProducts } from "../../dataServer/TodoApi";
 
 
 const Home = () => {
@@ -374,6 +374,7 @@ const Home = () => {
                   <br /> <br />
                   <div className="flex flex-col w-[30px] relative bottom-[40px] text-[10px]">
                     <Button
+                      onClick={()=>dispatch(addToWishlist(el))}
                       sx={{
                         borderRadius: "55%",
                         paddingTop: "15px",
@@ -486,6 +487,7 @@ const Home = () => {
                   <br /> <br />
                   <div className="flex flex-col w-[30px]  text-[10px]">
                     <Button
+                      onClick={()=>addToWishlist(el)}
                       sx={{
                         borderRadius: "55%",
                         paddingTop: "15px",
@@ -586,6 +588,7 @@ const Home = () => {
                   <br /> <br />
                   <div className="flex flex-col w-[30px] relative  text-[10px]">
                     <Button
+                      onClick={()=>addToWishlist(el)}
                       sx={{
                         borderRadius: "55%",
                         paddingTop: "15px",

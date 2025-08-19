@@ -14,12 +14,15 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Modal } from "antd";
+import LogoutIcon from '@mui/icons-material/Logout';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import { useSelector } from "react-redux";
 
 const Layout = () => {
-   const [open , setOpen ] = useState()
+  const [open, setOpen] = useState();
+  const wishlist = useSelector((state)=>state.data.wishlist)
   return (
     <div>
-
       <nav className="flex justify-around items-center p-[20px_0px] bg-white text-black dark:bg-black dark:text-white fixed top-0 left-0 w-[100%] z-50">
         <img className="w-[150px] hidden md:inline " src={img1} alt="" />
         <div className="flex items-center gap-3 md:hidden ">
@@ -41,30 +44,38 @@ const Layout = () => {
             variant="filled"
           />
           <SearchIcon sx={{ fontSize: "30px" }} />
+          <p className="absolute top-[30px] text-[12px] p-[3px_6px] rounded-[55%] left-[970px] bg-red-400 text-white" >{wishlist.length }</p>
+          <Link to='wishlist'>
           <FavoriteBorderIcon sx={{ fontSize: "30px" }} />
+          </Link>
           <ShoppingCartIcon sx={{ fontSize: "30px" }} />
-          <Button onClick={()=>setOpen(!open)} sx={{color:"black"}}>
-            <AccountCircleIcon   sx={{ fontSize: "30px" }} />
-            </Button>
+          <Button onClick={() => setOpen(!open)} sx={{ color: "black" }}>
+            <AccountCircleIcon sx={{ fontSize: "30px" }} />
+          </Button>
 
-           {open && (
-        <div className="absolute right-[250px] top-[100px] mt-2 w-40 bg-[#00000098] text-white rounded shadow-lg p-3 space-y-2">
-          <button className="flex items-center gap-2 hover:text-gray-300">
-            <i className="ri-user-line"></i>
-            <span><AccountCircleIcon/>  Account</span>
-          </button>
+          {open && (
+            <div className="absolute right-[250px] top-[80px] mt-2 w-40 bg-[#00000098] text-white rounded shadow-lg p-3 space-y-2">
+              <Link to='login'>
+                <button className="flex text-xl items-center gap-2 hover:text-gray-300">
+                  <i className="ri-user-line"></i>
+                  <span>
+                    <AccountCircleIcon /> Account
+                  </span>
+                </button>
+              </Link>
 
-          <button className="flex items-center gap-2 hover:text-gray-300">
-            <i className="ri-archive-line"></i>
-            <span>My Order</span>
-          </button>
-
-          <button className="flex items-center gap-2 hover:text-gray-300">
-            <i className="ri-logout-box-r-line"></i>
-            <span>Logout</span>
-          </button>
-        </div>
-      )}
+              <button className="flex text-xl items-center gap-2 hover:text-gray-300">
+                <i className="ri-archive-line"></i>
+                <span> <ShoppingBagIcon/> My Order</span>
+              </button> 
+              <Link to='singup'>
+              <button className="flex text-xl items-center gap-2 hover:text-gray-300">
+                <i className="ri-logout-box-r-line"></i>
+                <span> <LogoutIcon/> Logout</span>
+              </button>
+              </Link>
+            </div>
+          )}
         </div>
         <Switch />
       </nav>

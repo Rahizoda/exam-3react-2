@@ -6,6 +6,7 @@ import About from './components/PageAbout/About';
 import PageLogin from './components/page-1/page1';
 import Login from './components/PageLogin/Login';
 import Contact from './components/PageContact/Contact';
+import WishList from './components/PageWishList/WishList';
 
 const App = () => {
   return (
@@ -15,7 +16,8 @@ const App = () => {
         <Route path="singup" element={<PageLogin />} />
         <Route path="about" element={<About />} />
         <Route path='login' element={<Login />} />
-        <Route path='contact' element={ <Contact/>} />
+        <Route path='contact' element={<Contact />} />
+        <Route path='wishlist' element={<WishList/>} />
       </Route>
     </Routes>
   );
