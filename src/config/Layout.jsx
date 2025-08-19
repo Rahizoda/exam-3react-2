@@ -51,7 +51,7 @@ const Layout = () => {
         <div className="absolute right-[250px] top-[100px] mt-2 w-40 bg-[#00000098] text-white rounded shadow-lg p-3 space-y-2">
           <button className="flex items-center gap-2 hover:text-gray-300">
             <i className="ri-user-line"></i>
-            <span>Account</span>
+            <span><AccountCircleIcon/>  Account</span>
           </button>
 
           <button className="flex items-center gap-2 hover:text-gray-300">
