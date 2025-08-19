@@ -45,6 +45,7 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { useDispatch, useSelector } from "react-redux";
 import {  addToWishlist, GetCategory, GetProducts } from "../../dataServer/TodoApi";
+import { Link } from "react-router-dom";
 
 
 const Home = () => {
@@ -419,11 +420,13 @@ const Home = () => {
         })}
       </div>
       <div className="text-center mt-20">
+        <Link to='product'>
         <Button
           sx={{ bgcolor: "#DB4444", color: "white", padding: "10px 20px" }}
-        >
+          >
           All product
         </Button>
+        </Link>
       </div>
 
       <div>
@@ -636,7 +639,9 @@ const Home = () => {
       </div>
 
       <div className="text-center mt-20">
+        <Link to='product'>
         <Button sx={{bgcolor:'#DB4444', color:"white", padding:"10px 30px"}}>View All Products</Button>
+        </Link>
       </div>
 
 

@@ -32,7 +32,7 @@ const Switch = () => {
 
 const StyledWrapper = styled.div`
   .theme-switch {
-    --toggle-size: 13px;
+    --toggle-size: 10px;
     /* the size is adjusted using font-size,
        this is not transform scale,
        so you can choose any size */

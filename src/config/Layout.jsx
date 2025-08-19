@@ -44,7 +44,7 @@ const Layout = () => {
             variant="filled"
           />
           <SearchIcon sx={{ fontSize: "30px" }} />
-          <p className="absolute top-[30px] text-[12px] p-[3px_6px] rounded-[55%] left-[970px] bg-red-400 text-white" >{wishlist.length }</p>
+          <p className="absolute top-[30px] text-[12px] p-[3px_6px] rounded-[55%] left-[980px] bg-red-400 text-white" >{wishlist.length }</p>
           <Link to='wishlist'>
           <FavoriteBorderIcon sx={{ fontSize: "30px" }} />
           </Link>
@@ -55,7 +55,7 @@ const Layout = () => {
 
           {open && (
             <div className="absolute right-[250px] top-[80px] mt-2 w-40 bg-[#00000098] text-white rounded shadow-lg p-3 space-y-2">
-              <Link to='login'>
+              <Link to='account'>
                 <button className="flex text-xl items-center gap-2 hover:text-gray-300">
                   <i className="ri-user-line"></i>
                   <span>
@@ -68,12 +68,14 @@ const Layout = () => {
                 <i className="ri-archive-line"></i>
                 <span> <ShoppingBagIcon/> My Order</span>
               </button> 
-              <Link to='singup'>
-              <button className="flex text-xl items-center gap-2 hover:text-gray-300">
+            
+                <button onClick={() => {
+                  localStorage.removeItem('accessToken')
+                  window.location.href = "/"
+              }} className="flex text-xl items-center gap-2 hover:text-gray-300">
                 <i className="ri-logout-box-r-line"></i>
                 <span> <LogoutIcon/> Logout</span>
               </button>
-              </Link>
             </div>
           )}
         </div>
