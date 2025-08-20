@@ -13,14 +13,12 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Modal } from "antd";
 import LogoutIcon from '@mui/icons-material/Logout';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import { useSelector } from "react-redux";
 
 const Layout = () => {
   const [open, setOpen] = useState();
-  const wishlist = useSelector((state)=>state.data.wishlist)
+  const wishlist = JSON.parse(localStorage.getItem('wishlist')) || []
   return (
     <div>
       <nav className="flex justify-around items-center p-[20px_0px] bg-white text-black dark:bg-black dark:text-white fixed top-0 left-0 w-[100%] z-50">

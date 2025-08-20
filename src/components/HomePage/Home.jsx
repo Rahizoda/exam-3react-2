@@ -44,8 +44,9 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { useDispatch, useSelector } from "react-redux";
-import {  addToWishlist, GetCategory, GetProducts } from "../../dataServer/TodoApi";
+import {  GetById, GetCategory, GetProducts } from "../../dataServer/TodoApi";
 import { Link } from "react-router-dom";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
 const Home = () => {
@@ -64,6 +65,25 @@ const Home = () => {
 
   const progressCircle = useRef(null);
   const progressContent = useRef(null);
+
+    const [wishlist, setWishlist] = useState([]);
+
+  useEffect(() => {
+    const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    setWishlist(savedWishlist);
+  }, []);
+
+
+  // Функсияи илова кардан
+  const addToWishlist = (item) => {
+    if (wishlist.find(i => i.id === item.id)) {
+      alert("Маҳсулот аллакай дар wishlist ҳаст!");
+      return;
+    }
+    const updatedWishlist = [...wishlist, item];
+    setWishlist(updatedWishlist);
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+  };
 
 
 
@@ -102,7 +122,7 @@ const Home = () => {
       const now = new Date().getTime();
       const distance = target - now;
 
-      const days = Math.floor(distance / (100 * 60 * 60 * 24));
+      const days = Math.floor(distance / (10 * 60 * 60 * 24));
       const hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
@@ -356,69 +376,78 @@ const Home = () => {
       </div>
 
       <div
-        ref={listRef}
-        className="mt-[20px] w-[90%] m-auto flex items-center overflow-x-auto gap-10 h-[80vh] "
+  ref={listRef}
+  className="mt-[20px] w-[90%] m-auto flex items-center overflow-x-auto gap-10 h-[80vh] "
+>
+  {products.map((el) => {
+  
+
+    return (
+      <div
+        key={el.id}
+        className="min-w-[330px] min:h-[400px] p-[20px] border border-gray-400 rounded-[10px] "
       >
-        {products.map((el) => {
-          return (
-            <div key={el.id} className="min-w-[330px] min:h-[400px] p-[20px] shadow-[5px_5px_gray] rounded-[10px] ">
-              <div className="bg-blue-50  relative p-4  rounded-lg group">
-                <p className="text-white bg-red-400 p-[5px_15px] w-[70px] rounded-xl">
-                  {el.discountPrice } %
-                </p>
-                <div className="flex w-[200px]">
-                  <img
-                    className="bg-blue-50 p-[20px] w-[300px] h-[180px]"
-                    src={`http://37.27.29.18:8002/images/${el.image}`}
-                    alt=""
-                  />{" "}
-                  <br /> <br />
-                  <div className="flex flex-col w-[30px] relative bottom-[40px] text-[10px]">
-                    <Button
-                      onClick={()=>dispatch(addToWishlist(el))}
-                      sx={{
-                        borderRadius: "55%",
-                        paddingTop: "15px",
-                        paddingBottom: "15px",
-                        bgcolor: "white",
-                        color: "black",
-                        fontSize: "10px",
-                      }}
-                    >
-                      <FavoriteBorderIcon sx={{ fontSize: "19px" }} />
-                    </Button>
-                    <Button
-                      sx={{
-                        borderRadius: "55%",
-                        padding: "15px 0px",
-                        bgcolor: "white",
-                        color: "black",
-                      }}
-                    >
-                      <VisibilityIcon />
-                    </Button>
-                  </div>
-                </div>
-                <button
-                  className="absolute left-1/2 -translate-x-1/2 bottom-1 w-[100%] py-2 bg-black text-white rounded
-                opacity-0 group-hover:opacity-100 transition"
+        <div className="bg-blue-50  relative p-4  rounded-lg group ">
+          <p className="text-white bg-red-400 p-[5px_15px] w-[70px] rounded-xl">
+            {el.discountPrice} %
+          </p>
+          <div className="flex w-[200px]">
+            <img
+              className="bg-blue-50 p-[20px] w-[300px] h-[180px]"
+              src={`http://37.27.29.18:8002/images/${el.image}`}
+              alt=""
+            />
+
+            <div className="flex flex-col w-[30px] relative bottom-[40px] text-[10px]">
+              <Button
+                onClick={() => addToWishlist(el)}
+                sx={{
+                  borderRadius: "55%",
+                  paddingTop: "15px",
+                  paddingBottom: "15px",
+                  bgcolor: "white",
+                  color: "black",
+                  fontSize: "10px",
+                }}
+              >
+                {wishlist.some((i) => i.id === el.id) ? (
+                  <FavoriteIcon sx={{ fontSize: "19px", color:"red" }} />
+                ) : (
+                  <FavoriteBorderIcon sx={{ fontSize: "19px" }} />
+                )}
+              </Button>
+
+              <Link to={`info/${el.id}`}>
+                <Button
+                  sx={{
+                    borderRadius: "55%",
+                    padding: "15px 0px",
+                    bgcolor: "white",
+                    color: "black",
+                  }}
                 >
-                  Add To Cart
-                </button>
-              </div>{" "}
-              <br />
-              <h2 className="text-xl">{el.productName}</h2>
-              <br />
-              <p>
-                $ {el.price}{" "}
-              </p>
-              <p>
-                ⭐⭐⭐⭐⭐ <span className="text-gray-500">(88)</span>
-              </p>
+                  <VisibilityIcon />
+                </Button>
+              </Link>
             </div>
-          );
-        })}
+          </div>
+
+          <button
+            className="absolute left-1/2 -translate-x-1/2 bottom-1 w-[100%] py-2 bg-black text-white rounded opacity-0 group-hover:opacity-100 transition"
+          >
+            Add To Cart
+          </button>
+        </div>
+        <br />
+        <h2 className="text-xl">{el.productName}</h2>
+        <br />
+        <p>$ {el.price}</p>
+        <p>⭐⭐⭐⭐⭐ <span className="text-gray-500">(88)</span></p>
       </div>
+    );
+  })}
+</div>
+
       <div className="text-center mt-20">
         <Link to='product'>
         <Button
@@ -475,10 +504,10 @@ const Home = () => {
         <Button sx={{bgcolor:"#DB4444", color:"white", padding:"10px 20px"}}>View All</Button>
       </div>
 
-      <div className="flex w-[95%] overflow-auto   justify-between items-center m-auto">
+      <div className="flex w-[95%] overflow-auto h-[600px] gap-5   justify-between items-center m-auto">
         {products.map((el) => {
           return (
-            <div className="min-w-[300px] min:h-[350px] p-[20px]  rounded-[10px] ">
+            <div className="min-w-[300px] min:h-[350px] p-[20px] border border-gray-400  rounded-[10px] ">
               <div className="bg-blue-50  relative p-4  rounded-lg group">
                 
                 <div className="flex w-[200px]">
@@ -502,6 +531,7 @@ const Home = () => {
                     >
                       <FavoriteBorderIcon sx={{ fontSize: "19px" }} />
                     </Button>
+                    <Link to={`info/${el.id}`}>
                     <Button
                       sx={{
                         borderRadius: "55%",
@@ -509,9 +539,10 @@ const Home = () => {
                         bgcolor: "white",
                         color: "black",
                       }}
-                    >
+                      >
                       <VisibilityIcon />
                     </Button>
+                    </Link>
                   </div>
                 </div>
                 <button
@@ -579,7 +610,7 @@ const Home = () => {
 
         {products.map((el) => {
           return (
-            <div className="min-w-[330px] min:h-[400px] p-[20px]  rounded-[10px] ">
+            <div className="min-w-[330px] min:h-[400px] p-[20px]   rounded-[10px] ">
               <div className="bg-blue-50  relative p-4  rounded-lg group">
                 
                 <div className="flex w-[200px]">
@@ -603,6 +634,7 @@ const Home = () => {
                     >
                       <FavoriteBorderIcon sx={{ fontSize: "19px" }} />
                     </Button>
+                    <Link to={`info/${el.id}`}>
                     <Button
                       sx={{
                         borderRadius: "55%",
@@ -610,9 +642,10 @@ const Home = () => {
                         bgcolor: "white",
                         color: "black",
                       }}
-                    >
+                      >
                       <VisibilityIcon />
                     </Button>
+                      </Link>
                   </div>
                 </div>
                 <button

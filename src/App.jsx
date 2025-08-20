@@ -9,6 +9,7 @@ import Contact from './components/PageContact/Contact';
 import WishList from './components/PageWishList/WishList';
 import Account from './components/PageAccaunt/Account';
 import Products from './components/PageProduct/Products';
+import Info from './components/PageInfo/Info';
 
 const App = () => {
   return (
@@ -21,7 +22,8 @@ const App = () => {
         <Route path='contact' element={<Contact />} />
         <Route path='wishlist' element={<WishList />} />
         <Route path='account' element={<Account />} />
-        <Route path='product' element={<Products/>} />
+        <Route path='product' element={<Products />} />
+        <Route path='info/:id' element={ <Info/>} />
       </Route>
     </Routes>
   );
