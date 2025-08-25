@@ -10,6 +10,8 @@ import WishList from './components/PageWishList/WishList';
 import Account from './components/PageAccaunt/Account';
 import Products from './components/PageProduct/Products';
 import Info from './components/PageInfo/Info';
+import Bascet from './components/PageBacket/Bascet';
+import NoteFounde from './components/PageNotFound/NoteFounde';
 
 const App = () => {
   return (
@@ -23,7 +25,9 @@ const App = () => {
         <Route path='wishlist' element={<WishList />} />
         <Route path='account' element={<Account />} />
         <Route path='product' element={<Products />} />
-        <Route path='info/:id' element={ <Info/>} />
+        <Route path='info/:id' element={<Info />} />
+        <Route path='bascet' element={<Bascet />} />
+        <Route path='*' element={<NoteFounde/>} />
       </Route>
     </Routes>
   );

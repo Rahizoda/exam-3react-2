@@ -14,7 +14,7 @@ const Login = () => {
       const res = await API.post("Account/login", { userName, password });
       if (res.data.data) {
         localStorage.setItem("accessToken", res.data.data);
-        navigate("/");
+        navigate("/bascet");
       }
       return res.data;
     } finally {

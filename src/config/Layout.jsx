@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import img1 from "../assets/Group 1116606595.png";
 import Switch from "./Swicher";
@@ -13,12 +13,32 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LogoutIcon from '@mui/icons-material/Logout';
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import LogoutIcon from "@mui/icons-material/Logout";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import { useDispatch, useSelector } from "react-redux";
+import { GetBasket, Profile } from "../dataServer/TodoApi";
+import jwt_decode from "jwt-decode"
 
 const Layout = () => {
   const [open, setOpen] = useState();
-  const wishlist = JSON.parse(localStorage.getItem('wishlist')) || []
+  const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+  const dispatch = useDispatch();
+  const { basket } = useSelector((state) => state.data);
+  useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      dispatch(GetBasket());
+    }
+  }, [dispatch]);
+
+    const token = localStorage.getItem("accessToken");
+  if (token) {
+    const decoded = jwt_decode(token);
+    console.log(decoded)
+  }
+
+  const totalQuantity = basket?.reduce((acc, cart) => {
+    return acc + cart.productsInCart?.reduce((sum) => sum + 1, 0);
+  }, 0);
   return (
     <div>
       <nav className="flex justify-around items-center p-[20px_0px] bg-white text-black dark:bg-black dark:text-white fixed top-0 left-0 w-[100%] z-50">
@@ -42,37 +62,49 @@ const Layout = () => {
             variant="filled"
           />
           <SearchIcon sx={{ fontSize: "30px" }} />
-          <p className="absolute top-[30px] text-[12px] p-[3px_6px] rounded-[55%] left-[980px] bg-red-400 text-white" >{wishlist.length }</p>
-          <Link to='wishlist'>
-          <FavoriteBorderIcon sx={{ fontSize: "30px" }} />
+          <p className="absolute top-[27px] text-[12px] p-[3px_6px] rounded-[55%] left-[993px] bg-red-400 text-white">
+            {wishlist.length}
+          </p>
+          <Link to="wishlist">
+            <FavoriteBorderIcon sx={{ fontSize: "30px" }} />
           </Link>
-          <ShoppingCartIcon sx={{ fontSize: "30px" }} />
+          <p className="absolute top-[27px] text-[12px] p-[3px_6px] rounded-[55%] left-[1040px] bg-red-400 text-white">
+            {totalQuantity}
+          </p>
+          <Link to="bascet">
+            <ShoppingCartIcon sx={{ fontSize: "30px" }} />
+          </Link>
           <Button onClick={() => setOpen(!open)} sx={{ color: "black" }}>
             <AccountCircleIcon sx={{ fontSize: "30px" }} />
           </Button>
 
           {open && (
-            <div className="absolute right-[250px] top-[80px] mt-2 w-40 bg-[#00000098] text-white rounded shadow-lg p-3 space-y-2">
-              <Link to='account'>
-                <button className="flex text-xl items-center gap-2 hover:text-gray-300">
-                  <i className="ri-user-line"></i>
-                  <span>
-                    <AccountCircleIcon /> Account
-                  </span>
-                </button>
-              </Link>
+            <div className="absolute right-0 md:right-[250px] top-[80px] mt-2 w-44 bg-black/60 text-white rounded-lg shadow-lg p-4 space-y-3 backdrop-blur-sm z-50 transition-all duration-300">
+              <button
+                onClick={() => {
+                  dispatch(Profile()); 
+                  window.location.href = "/account";
+                }}
+                className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded transition-colors duration-200"
+              >
+                <AccountCircleIcon fontSize="small" />
+                <span className="text-sm">Account</span>
+              </button>
 
-              <button className="flex text-xl items-center gap-2 hover:text-gray-300">
-                <i className="ri-archive-line"></i>
-                <span> <ShoppingBagIcon/> My Order</span>
-              </button> 
-            
-                <button onClick={() => {
-                  localStorage.removeItem('accessToken')
-                  window.location.href = "/"
-              }} className="flex text-xl items-center gap-2 hover:text-gray-300">
-                <i className="ri-logout-box-r-line"></i>
-                <span> <LogoutIcon/> Logout</span>
+              <button className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded transition-colors duration-200">
+                <ShoppingBagIcon fontSize="small" />
+                <span className="text-sm">My Orders</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  localStorage.removeItem("accessToken");
+                  window.location.href = "/";
+                }}
+                className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded transition-colors duration-200"
+              >
+                <LogoutIcon fontSize="small" />
+                <span className="text-sm">Logout</span>
               </button>
             </div>
           )}

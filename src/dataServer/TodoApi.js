@@ -29,6 +29,75 @@ export const GetById = createAsyncThunk("todos/GetById", async (id) => {
   }
 })
 
+export const GetBasket = createAsyncThunk("todos/GetBasket", async () => {
+  try {
+    const { data } = await API.get('Cart/get-products-from-cart')
+    return data.data
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+export const PostCard = createAsyncThunk("todos/PostCard", async (id,{dispatch}) => {
+  try {
+     await API.post(`Cart/add-product-to-cart?id=${id}`)
+    dispatch(GetBasket())
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+export const DeleteProduct = createAsyncThunk("todos/DeleteProduct", async (id ,{dispatch}) => {
+  try {
+    await API.delete(`Cart/delete-product-from-cart?id=${id}`)
+    dispatch(GetBasket())
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+export const Increment = createAsyncThunk("todos/Increament", async (id, { dispatch }) => {
+  try {
+    await API.put(`Cart/increase-product-in-cart?id=${id}`)
+    dispatch(GetBasket())
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+export const Decrement = createAsyncThunk("todos/Decrement", async (id, { dispatch }) => {
+  try {
+    await API.put(`Cart/reduce-product-in-cart?id=${id}`)
+    dispatch(GetBasket())
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+export const ClearBasket = createAsyncThunk("todos/ClearBasket", async (__dirname, {dispatch}) => {
+  try {
+    await API.delete(`Cart/clear-cart`)
+     dispatch(GetBasket())
+  } catch (error) {
+    console.log(error);
+  }
+})
+
+const token = localStorage.getItem('accessToken')
+
+export const Profile = createAsyncThunk("todos/Profile", async (id) => {
+  try {
+    const res = await API.get(`UserProfile/get-user-profile-by-id?id=${id}` ,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+)
+    return res.data
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 
 export const DataSlice = createSlice({
@@ -38,8 +107,11 @@ export const DataSlice = createSlice({
     data: [],
     byCategory: [],
     byId: [], 
-    wishlist:[]
-  } ,
+    wishlist: [],
+    basket: [], 
+    user:[]
+  },
+  
   reducers: {
     addToWishlist: (state, { payload }) => {
        const exists = state.wishlist.find((item) => item.id === payload.id);
@@ -60,6 +132,14 @@ export const DataSlice = createSlice({
     }), 
     builder.addCase(GetById.fulfilled, (state , {payload})=>{
       state.byId = payload
+    }),
+    builder.addCase(GetBasket.fulfilled , (state, {payload})=>{
+      state.basket = payload
+    }),
+    builder.addCase(Profile.fulfilled , (state ,{payload})=>{
+      console.log(payload);
+      
+      state.user = payload
     })
   }
 })
