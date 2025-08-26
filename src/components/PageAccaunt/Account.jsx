@@ -1,7 +1,29 @@
 import { Button, TextField } from '@mui/material';
+import  {jwtDecode}   from 'jwt-decode';
 import React from 'react';
 
 const Account = () => {
+     const token = localStorage.getItem("accessToken");
+  let decoded = null;
+
+  try {
+    if (token) {
+      decoded = jwtDecode(token);
+      console.log("Decoded token:", decoded);
+    }
+  } catch (error) {
+    console.error("Invalid token:", error);
+  }
+
+  if (!decoded) {
+    return (
+      <div className="mt-[130px] ml-[70px]">
+        <p className="text-xl"><span className="text-gray-500">Home \ </span>My Account</p>
+        <h2 className="text-red-500 mt-5">⚠️ Лутфан аввал логин шавед</h2>
+      </div>
+    );
+  }
+    
   return (
       <>
           <p className='text-xl mt-[130px] ml-[70px]'><span className='text-gray-500'>Home \ </span>My Account</p>
@@ -20,20 +42,23 @@ const Account = () => {
               </div>
 
               <div className='w-[60%] border border-gray-400 p-[24px] shadow-[5px_5px_5px_gray] rounded-[5px]'>
+                  <div className='flex justify-between items-end'>
                   <h1 className='text-2xl'>Profile</h1>
+                  <img src={`http://37.27.29.18:8002/images/${decoded.sub}`} className='w-[150px] h-[150px] rounded-[55%] ' alt="eodasijl" />
+                  </div> <br />
 
                   <div className='w-[100%] gap-2 flex items-center m-[20px_0px]'>
-                      <TextField label='FirstName' fullWidth variant='outlined'/>
-                      <TextField label='LastName' variant='outlined' fullWidth/>
+                      <TextField value={decoded.name} label='FirstName' fullWidth variant='outlined'/>
+                      <TextField value={decoded.name} label='LastName' variant='outlined' fullWidth/>
                   </div>
                   <div className='w-[100%] gap-2 flex items-center '>
-                      <TextField label='Email Adress' fullWidth variant='outlined' />
+                      <TextField value={decoded.email} label='Email Adress' fullWidth variant='outlined' />
                       <TextField label='Street adress' fullWidth variant='outlined' />
                   </div> <br /><br />
 
                   <div>
                       <h2 className='text-2xl'>Password Changes</h2> <br />
-                      <TextField label='Current passwod' fullWidth variant='outlined' /> <br /> 
+                      <TextField value={decoded.sid} label='Current passwod' fullWidth variant='outlined' /> <br /> 
                       <div className='flex w-[100%] items-center gap-2 m-[20px_0px]'>
                           <TextField label='New passwod' fullWidth variant='outlined'/>
                           <TextField label='Confirm new passwod' fullWidth variant='outlined'/>

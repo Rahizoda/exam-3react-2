@@ -100,6 +100,7 @@ export const Profile = createAsyncThunk("todos/Profile", async (id) => {
 })
 
 
+
 export const DataSlice = createSlice({
   name: 'counter',
   
@@ -109,7 +110,7 @@ export const DataSlice = createSlice({
     byId: [], 
     wishlist: [],
     basket: [], 
-    user:[]
+    user: [], 
   },
   
   reducers: {
@@ -137,8 +138,6 @@ export const DataSlice = createSlice({
       state.basket = payload
     }),
     builder.addCase(Profile.fulfilled , (state ,{payload})=>{
-      console.log(payload);
-      
       state.user = payload
     })
   }

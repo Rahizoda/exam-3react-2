@@ -32,13 +32,13 @@ const Login = () => {
     if (loading) return <Loader/>
     
   return (
-    <div className="mt-[200px] w-[450px] m-auto">
+    <div className="mt-[200px]  w-[450px] m-auto">
       <h1 className="text-4xl">Log in to Exclusive</h1> <br />
       <p>Enter your details below</p> <br />
 
       <form
         onSubmit={handlesubmit}
-        className="flex flex-col m-auto bg-white text-black dark:bg-black dark:text-white  gap-5"
+        className="flex flex-col m-auto  gap-5"
       >
         <TextField
           name="userName"

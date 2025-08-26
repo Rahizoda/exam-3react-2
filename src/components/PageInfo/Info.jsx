@@ -124,7 +124,7 @@ const Info = () => {
 
                 {/* Тасвир */}
                 <img
-                  className="w-full h-[200px] object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                  className="w-full mix-blend-multiply h-[200px] object-contain p-4 transition-transform duration-500 group-hover:scale-105"
                   src={`http://37.27.29.18:8002/images/${el.image}`}
                   alt={el.productName}
                 />

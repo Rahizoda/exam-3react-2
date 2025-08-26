@@ -53,6 +53,7 @@ const Home = () => {
   const { data, byCategory } = useSelector((state) => state.data);
   const products = data?.data?.products || [];
   const categoryes = byCategory?.data || [];
+  
 
   useEffect(() => {
     dispatch(GetProducts());
@@ -61,6 +62,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(GetCategory());
   }, [dispatch]);
+
 
   const progressCircle = useRef(null);
   const progressContent = useRef(null);
@@ -83,10 +85,7 @@ const Home = () => {
     localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
   };
 
-  const onAutoplayTimeLeft = (s, time, progress) => {
-    progressCircle.current.style.setProperty("--progress", 1 - progress);
-    progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
-  };
+ 
   const listRef = useRef(null);
 
   const scrollLeft = () => {
@@ -111,13 +110,13 @@ const Home = () => {
   });
 
   useEffect(() => {
-    const target = new Date("2025-08-25T00:00:00").getTime();
+    const target = new Date("2026-08-27T00:00:00").getTime();
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const distance = target - now;
 
-      const days = Math.floor(distance / (10000 * 60 * 60 * 24));
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
@@ -152,25 +151,19 @@ const Home = () => {
     }, 1000);
   };
 
+  
+
   return (
     <>
-      <div className="mt-40 flex items-start  justify-around">
-        <div className="w-[25%] text-xl   p-[0px_30px] text-start">
-          <select name="" id="">
-            <option value="">Woman’s Fashion</option>
-          </select>
-          <br /> <br />
-          <select name="" id="">
-            <option value="">Men’s Fashion</option>
-          </select>{" "}
-          <br /> <br />
-          <h2>Electronics</h2> <br />
-          <h2>Home & Lifestyle</h2> <br />
-          <h2>Medicine</h2> <br />
-          <h2>Sports & Outdoor</h2> <br />
-          <h2>Baby’s & Toys</h2> <br />
-          <h2>Groceries & Pets</h2> <br />
-          <h2>Health & Beauty</h2> <br />
+      <div className="mt-40 flex items-start m-[50px_0px] justify-around">
+        <div className="w-[25%] text-xl flex flex-col gap-8 justify-start items-start font-bold   p-[0px_30px] text-start">
+          {
+            categoryes.slice(0, 6).map((el) => {
+              return (
+                <Button sx={{color:"black"}} >{el.categoryName }</Button >
+              )
+            })
+          }
         </div>
 
         <Swiper
@@ -184,7 +177,6 @@ const Home = () => {
             clickable: true,
           }}
           modules={[Autoplay, Pagination]}
-          onAutoplayTimeLeft={onAutoplayTimeLeft}
           className="mySwiper"
         >
           <SwiperSlide>
@@ -398,29 +390,25 @@ const Home = () => {
 
       <div
         ref={listRef}
-        className="mt-6 w-[90%] mx-auto flex items-stretch overflow-x-auto gap-6 h-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300"
+        className="mt-6 w-[90%] mx-auto flex items-stretch  overflow-x-auto gap-6 h-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300"
       >
         {products.map((el) => {
           return (
             <div
               key={el.id}
-              className="min-w-[320px] max-w-[350px] flex flex-col bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4"
+              className="min-w-[320px] dark:bg-[#03032b] max-w-[350px] flex flex-col bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4"
             >
-              {/* --- Тасвир ва кнопкаҳои фаврӣ --- */}
               <div className="relative bg-gray-50 rounded-xl group overflow-hidden">
-                {/* Скидка */}
                 <p className="absolute z-30 top-2 left-2 text-sm font-medium text-white bg-red-500 px-3 py-1 rounded-full shadow">
                   {el.discountPrice}%
                 </p>
 
-                {/* Тасвир */}
                 <img
-                  className="w-full h-[200px] object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                  className="w-full mix-blend-multiply h-[200px] object-contain p-4 transition-transform duration-500 group-hover:scale-105"
                   src={`http://37.27.29.18:8002/images/${el.image}`}
                   alt={el.productName}
                 />
 
-                {/* Кнопкаҳои wishlist ва view */}
                 <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Button
                     onClick={() => addToWishlist(el)}
@@ -474,10 +462,10 @@ const Home = () => {
 
               {/* --- Матн --- */}
               <div className="mt-4 flex flex-col flex-grow">
-                <h2 className="text-lg font-semibold text-gray-800 truncate">
+                <h2 className="text-lg dark:text-gray-300 font-semibold text-gray-800 truncate">
                   {el.productName}
                 </h2>
-                <p className="text-xl font-bold text-black mt-2">
+                <p className="text-xl dark:text-white font-bold text-black mt-2">
                   $ {el.price}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
@@ -540,7 +528,11 @@ const Home = () => {
         >
           {categoryes.slice(0, 6).map((el) => {
             return (
-              <div
+              <div onClick={() => {
+                console.log(el.id);
+                
+                // window.location = '/product'
+              }}
                 key={el.id}
                 className="min-w-[170px] dark:bg-gray-600 dark:text-white min-h-[145px] border border-gray-300 text-center flex flex-col justify-center items-center gap-2 rounded-lg bg-white hover:bg-red-400 hover:text-white hover:scale-105 transition duration-300 shadow-sm"
               >
@@ -573,7 +565,7 @@ const Home = () => {
           return (
             <div
               key={el.id}
-              className="min-w-[320px] max-w-[350px] flex flex-col bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4"
+              className="min-w-[320px] dark:bg-[#03032b] max-w-[350px] flex flex-col bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4"
             >
               {/* --- Тасвир ва кнопкаҳои фаврӣ --- */}
               <div className="relative bg-gray-50 rounded-xl group overflow-hidden">
@@ -584,7 +576,7 @@ const Home = () => {
 
                 {/* Тасвир */}
                 <img
-                  className="w-full h-[200px] object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                  className="w-full mix-blend-multiply h-[200px] object-contain p-4 transition-transform duration-500 group-hover:scale-105"
                   src={`http://37.27.29.18:8002/images/${el.image}`}
                   alt={el.productName}
                 />
@@ -642,10 +634,10 @@ const Home = () => {
 
               {/* --- Матн --- */}
               <div className="mt-4 flex flex-col flex-grow">
-                <h2 className="text-lg font-semibold text-gray-800 truncate">
+                <h2 className="text-lg dark:text-gray-300 font-semibold text-gray-800 truncate">
                   {el.productName}
                 </h2>
-                <p className="text-xl font-bold text-black mt-2">
+                <p className="text-xl dark:text-white font-bold text-black mt-2">
                   $ {el.price}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
@@ -707,10 +699,9 @@ const Home = () => {
           return (
             <div
               key={el.id}
-              className="min-w-[320px] max-w-[350px] flex flex-col bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4"
+              className="min-w-[320px] dark:bg-[#03032b] max-w-[350px] flex flex-col bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4"
             >
-              {/* --- Тасвир ва кнопкаҳои фаврӣ --- */}
-              <div className="relative bg-gray-50 rounded-xl group overflow-hidden">
+              <div className="relative  bg-gray-50 rounded-xl group overflow-hidden">
                 {/* Скидка */}
                 <p className="absolute z-30 top-2 left-2 text-sm font-medium text-white bg-red-500 px-3 py-1 rounded-full shadow">
                   {el.discountPrice}%
@@ -718,7 +709,7 @@ const Home = () => {
 
                 {/* Тасвир */}
                 <img
-                  className="w-full h-[200px] object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                  className="w-full mix-blend-multiply h-[200px] object-contain p-4 transition-transform duration-500 group-hover:scale-105"
                   src={`http://37.27.29.18:8002/images/${el.image}`}
                   alt={el.productName}
                 />
@@ -775,15 +766,15 @@ const Home = () => {
               </div>
 
               {/* --- Матн --- */}
-              <div className="mt-4 flex flex-col flex-grow">
-                <h2 className="text-lg font-semibold text-gray-800 truncate">
+              <div className="mt-4 dark:text-white text-black flex flex-col flex-grow">
+                <h2 className="text-lg dark:text-gray-200 font-semibold text-gray-800 truncate">
                   {el.productName}
                 </h2>
-                <p className="text-xl font-bold text-black mt-2">
+                <p className="text-xl dark:text-white font-bold text-black mt-2">
                   $ {el.price}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
-                  ⭐⭐⭐⭐⭐ <span className="text-gray-400">(88)</span>
+                  ⭐⭐⭐⭐⭐ <span className=" text-gray-400">(88)</span>
                 </p>
               </div>
             </div>

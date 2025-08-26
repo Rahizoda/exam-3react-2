@@ -25,7 +25,8 @@ const StyledWrapper = styled.div`
     width: 100px;
     height: 80px;
     margin-left: 650px;
-    margin-top: 200px
+    margin-top: 300px
+    margin-botton: 50px
   }
 
   .🤚:before {

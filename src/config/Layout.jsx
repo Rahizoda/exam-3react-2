@@ -17,7 +17,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import { useDispatch, useSelector } from "react-redux";
 import { GetBasket, Profile } from "../dataServer/TodoApi";
-import jwt_decode from "jwt-decode"
 
 const Layout = () => {
   const [open, setOpen] = useState();
@@ -30,18 +29,12 @@ const Layout = () => {
     }
   }, [dispatch]);
 
-    const token = localStorage.getItem("accessToken");
-  if (token) {
-    const decoded = jwt_decode(token);
-    console.log(decoded)
-  }
-
   const totalQuantity = basket?.reduce((acc, cart) => {
     return acc + cart.productsInCart?.reduce((sum) => sum + 1, 0);
   }, 0);
   return (
     <div>
-      <nav className="flex justify-around items-center p-[20px_0px] bg-white text-black dark:bg-black dark:text-white fixed top-0 left-0 w-[100%] z-50">
+      <nav className="flex justify-around items-center p-[20px_0px] bg-white text-black dark:bg-[#100924] dark:text-white fixed top-0 left-0 w-[100%] z-50">
         <img className="w-[150px] hidden md:inline " src={img1} alt="" />
         <div className="flex items-center gap-3 md:hidden ">
           <ViewWeekIcon />
@@ -74,7 +67,10 @@ const Layout = () => {
           <Link to="bascet">
             <ShoppingCartIcon sx={{ fontSize: "30px" }} />
           </Link>
-          <Button onClick={() => setOpen(!open)} sx={{ color: "black" }}>
+          <Button
+            onClick={() => setOpen(!open)}
+            className="dark:!text-white !text-black"
+          >
             <AccountCircleIcon sx={{ fontSize: "30px" }} />
           </Button>
 
@@ -82,7 +78,7 @@ const Layout = () => {
             <div className="absolute right-0 md:right-[250px] top-[80px] mt-2 w-44 bg-black/60 text-white rounded-lg shadow-lg p-4 space-y-3 backdrop-blur-sm z-50 transition-all duration-300">
               <button
                 onClick={() => {
-                  dispatch(Profile()); 
+                  dispatch(Profile());
                   window.location.href = "/account";
                 }}
                 className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded transition-colors duration-200"
@@ -112,7 +108,9 @@ const Layout = () => {
         <Switch />
       </nav>
 
-      <Outlet />
+      <main className="overflow-hidden">
+        <Outlet />
+      </main>
 
       <footer className="flex items-start flex-wrap md:flex-row mt-[150px] justify-around bg-black text-white p-[100px_0px]">
         <div className="w-[90%] md:w-auto">
