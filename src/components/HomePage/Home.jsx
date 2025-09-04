@@ -465,7 +465,7 @@ const Home = () => {
                 <h2 className="text-lg dark:text-gray-300 font-semibold text-gray-800 truncate">
                   {el.productName}
                 </h2>
-                <p className="text-xl dark:text-white font-bold text-black mt-2">
+                <p className="text-[14px] dark:text-white font-bold text-black mt-2">
                   $ {el.price}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
